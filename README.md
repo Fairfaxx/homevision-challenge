@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+HomeVision Challenge
 
-## Getting Started
+This project is a document review interface built with Next.js, TypeScript and Tailwind CSS.
 
-First, run the development server:
+The goal of the challenge was to create a simple review workflow where users can:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Review issues found in a PDF document
+- Navigate between issues and PDF pages
+- Resolve issues
+- Filter issues by severity
+- Block submission until all important issues are resolved
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Tech Stack:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- react-pdf
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Features Implemented
+PDF Viewer:
+- Multi-page PDF rendering using react-pdf
+- Smooth scrolling inside the document
+- Selected page highlight
+- Responsive PDF viewer for mobile screens
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+Issue Management:
+- Display list of issues with severity levels
+- Resolve issues directly from the UI
+- Dynamic counters for open/resolved issues
+- Submit button disabled until all critical and major issues are resolved
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Filtering
+Filter issues by:
+- All
+- Critical
+- Major
+- Minor
+- Resolved
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+Navigation:
+- Clicking an issue scrolls the PDF viewer to the related page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+UI / UX:
+- Sticky filter navbar
+- Hover states for buttons and cards
+- Empty state when no issues exist for a filter
+- Responsive layout for mobile devices
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Project Structure
+app/
+  components/
+    IssueList.tsx
+    IssueSummaryCards.tsx
+    PDFViewer.tsx
+    PDFViewerClient.tsx
+    ReviewHeader.tsx
+    StatusFilters.tsx
+    SubmissionBanner.tsx
+
+  mocks/
+    review_mock.json
+
+  types/
+    review.ts
+    
+Running the Project
+
+Install dependencies: npm install
+
+Start development server: npm run dev
+
+Open: http://localhost:3000
+
+Main Decisions
+I used lifted state in the Home component to manage:
+  -selected page
+  -resolved issues
+  -filters
+  
+- I separated components to keep the project easier to maintain and scale.
+- I used derived state for filtered issues and counters instead of storing duplicated state.
+
+Possible Future Improvements
+- Persist resolved issues in local storage or backend
+- Add PDF search
+- Add annotations/highlights inside the PDF
+- Add virtualization for large issue lists
+
+Notes
+
+One of the biggest challenges was integrating react-pdf with Next.js App Router because of SSR/client rendering issues.
+I solved it using a client wrapper component with dynamic import and ssr: false.
