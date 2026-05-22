@@ -41,17 +41,36 @@ const PDFViewer = ({ pdfUrl, selectedPage }: PDFViewerProps) => {
   const [pdfError, setPdfError] = useState<string | null>(null);
   const [pageWidth, setPageWidth] = useState(900);
 
+  const widthRafRef = useRef<number | null>(null);
   const pageRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   useEffect(() => {
     const updateWidth = () => {
-      setPageWidth(Math.min(window.innerWidth - 48, 900));
+      const nextWidth = Math.max(Math.min(window.innerWidth - 48, 900), 280);
+
+      setPageWidth((currentWidth) =>
+        currentWidth === nextWidth ? currentWidth : nextWidth,
+      );
+    };
+
+    const handleResize = () => {
+      if (widthRafRef.current !== null) {
+        cancelAnimationFrame(widthRafRef.current);
+      }
+
+      widthRafRef.current = requestAnimationFrame(updateWidth);
     };
 
     updateWidth();
-    window.addEventListener('resize', updateWidth);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    return () => window.removeEventListener('resize', updateWidth);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+
+      if (widthRafRef.current !== null) {
+        cancelAnimationFrame(widthRafRef.current);
+      }
+    };
   }, []);
 
   const handleLoadSuccess = ({ numPages }: PDFDocumentProxy) => {

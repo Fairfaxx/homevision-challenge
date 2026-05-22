@@ -46,6 +46,13 @@ Current behavior includes:
 - Empty filter results show an explicit empty-state message.
 - Resolving an already-resolved issue is idempotent.
 
+Verification steps for error handling:
+
+1. Temporarily set the PDF URL to an invalid path in `app/mocks/review_mock.json`.
+2. Run `npm run dev` and open the app.
+3. Confirm the viewer shows a clear fallback error message (load/source failure) instead of crashing.
+4. Restore the original PDF URL and verify normal rendering is recovered.
+
 ## Run From Scratch
 
 ### Prerequisites
