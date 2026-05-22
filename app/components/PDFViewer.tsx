@@ -18,9 +18,10 @@ type PDFViewerProps = {
 
 const PDFViewer = ({ pdfUrl, selectedPage }: PDFViewerProps) => {
   const [numPages, setNumPages] = useState(0);
-  const pageRefs = useRef<Record<number, HTMLDivElement | null>>({});
-
+  const [pdfError, setPdfError] = useState<string | null>(null);
   const [pageWidth, setPageWidth] = useState(900);
+
+  const pageRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   useEffect(() => {
     const updateWidth = () => {
@@ -49,9 +50,15 @@ const PDFViewer = ({ pdfUrl, selectedPage }: PDFViewerProps) => {
   return (
     <div className="h-[800px] overflow-y-auto rounded-xl border bg-zinc-100 p-4">
       <p className="mb-4 text-black">Selected page: {selectedPage}</p>
+      {pdfError && (
+        <p className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          {pdfError}
+        </p>
+      )}
       <Document
         file={pdfUrl}
         onLoadSuccess={handleLoadSuccess}
+        onLoadError={() => setPdfError('Could not load the PDF document.')}
         loading={<p className="text-black">Loading document...</p>}
         error={
           <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">

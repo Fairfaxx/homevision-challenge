@@ -30,13 +30,15 @@ PDF Viewer:
 
 ## Technical Decisions
 
-I used Next.js with TypeScript because the challenge is focused on a real frontend workflow and type safety helps avoid mistakes with the review data.
+I used Next.js with TypeScript because the challenge is focused on building a real frontend workflow, and TypeScript helps keep the review data safer and easier to work with.
 
-I used react-pdf to render the uploaded PDF inside the app. Since PDF rendering depends on browser APIs, I wrapped the PDF viewer in a client component and loaded it dynamically to avoid SSR issues.
+I used `react-pdf` to render the uploaded document inside the app. Since PDF rendering depends on browser APIs, I wrapped the PDF viewer in a client component and loaded it dynamically to avoid SSR issues.
 
-The main review state lives in the Home page because different components need access to the same information: selected page, resolved issues, filters, and submit state.
+The main state lives in the Home page because several components need the same data: selected page, resolved issues, active filter, and submit state.
 
-Counters and filtered issues are derived from the review data and resolved issues state. I did this to avoid duplicated state.
+The counters, filtered issues, and submit state are derived from the review data and resolved issues. This avoids duplicated state and keeps the UI consistent.
+
+I added virtualization with `react-window` so the issue list can scale better if the backend returns many issues.
 
 
 ## Issue Management:
@@ -90,6 +92,15 @@ Install dependencies: npm install
 Start development server: npm run dev
 
 Open: http://localhost:3000
+
+## Testing
+
+I added basic tests with Vitest and React Testing Library.
+
+The tests cover important UI behavior like rendering issue data and resolving an issue from the issue card.
+
+To run tests:
+- npm run test
 
 ## Main Decisions
 I used lifted state in the Home component to manage:

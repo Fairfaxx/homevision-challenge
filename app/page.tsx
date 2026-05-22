@@ -3,7 +3,7 @@ import IssueList from './components/IssueList';
 import ReviewHeader from './components/ReviewHeader';
 import SubmissionBanner from './components/SubmissionBanner';
 import PDFViewerClient from './components/PDFViewerClient';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import reviewMock from './mocks/review_mock.json';
 import type { Review } from './types/review';
 import StatusFilters from './components/StatusFilters';
@@ -57,6 +57,16 @@ export default function Home() {
               ? resolvedIssuesList
               : [];
 
+  const handleResolveIssue = useCallback((issueId: string) => {
+    setResolvedIssues((prev) =>
+      prev.includes(issueId) ? prev : [...prev, issueId],
+    );
+  }, []);
+
+  const handleIssueClick = useCallback((page: number) => {
+    setSelectedPage(page);
+  }, []);
+
   return (
     <div className="min-h-screen bg-zinc-50 p-8">
       <main className="mx-auto max-w-5xl space-y-6">
@@ -87,10 +97,8 @@ export default function Home() {
           <IssueList
             issues={filteredIssues}
             resolvedIssues={resolvedIssues}
-            onResolveIssue={(issueId) =>
-              setResolvedIssues((prev) => [...prev, issueId])
-            }
-            onIssueClick={(page) => setSelectedPage(page)}
+            onResolveIssue={handleResolveIssue}
+            onIssueClick={handleIssueClick}
           />
         </section>
 
