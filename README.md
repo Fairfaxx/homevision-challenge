@@ -14,14 +14,14 @@ The goal of the challenge was to create a simple review workflow where users can
 - Filter issues by severity
 - Block submission until all important issues are resolved
 
-Tech Stack:
+## Tech Stack:
 
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
 - react-pdf
 
-Features Implemented
+## Features Implemented
 PDF Viewer:
 - Multi-page PDF rendering using react-pdf
 - Smooth scrolling inside the document
@@ -39,13 +39,13 @@ The main review state lives in the Home page because different components need a
 Counters and filtered issues are derived from the review data and resolved issues state. I did this to avoid duplicated state.
 
 
-Issue Management:
+## Issue Management:
 - Display list of issues with severity levels
 - Resolve issues directly from the UI
 - Dynamic counters for open/resolved issues
 - Submit button disabled until all critical and major issues are resolved
 
-Filtering
+## Filtering
 Filter issues by:
 - All
 - Critical
@@ -53,17 +53,20 @@ Filter issues by:
 - Minor
 - Resolved
 
+## Performance
+- Virtualized issue list using `react-window`
 
-Navigation:
+
+## Navigation:
 - Clicking an issue scrolls the PDF viewer to the related page
 
-UI / UX:
+## UI / UX:
 - Sticky filter navbar
 - Hover states for buttons and cards
 - Empty state when no issues exist for a filter
 - Responsive layout for mobile devices
 
-Project Structure
+## Project Structure
 app/
   components/
     IssueList.tsx
@@ -80,7 +83,7 @@ app/
   types/
     review.ts
     
-Running the Project
+## Running the Project
 
 Install dependencies: npm install
 
@@ -88,7 +91,7 @@ Start development server: npm run dev
 
 Open: http://localhost:3000
 
-Main Decisions
+## Main Decisions
 I used lifted state in the Home component to manage:
   -selected page
   -resolved issues
@@ -97,13 +100,13 @@ I used lifted state in the Home component to manage:
 - I separated components to keep the project easier to maintain and scale.
 - I used derived state for filtered issues and counters instead of storing duplicated state.
 
-Possible Future Improvements
+## Possible Future Improvements
 - Persist resolved issues in local storage or backend
 - Add PDF search
 - Add annotations/highlights inside the PDF
 - Add virtualization for large issue lists
 
-Notes
+## Notes
 
 One of the biggest challenges was integrating react-pdf with Next.js App Router because of SSR/client rendering issues.
 I solved it using a client wrapper component with dynamic import and ssr: false.
