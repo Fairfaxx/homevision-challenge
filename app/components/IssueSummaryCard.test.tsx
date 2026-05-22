@@ -2,14 +2,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import IssueSummaryCards from './IssueSummaryCard';
+import IssueSummaryCard from './IssueSummaryCard';
 
-describe('IssueSummaryCards', () => {
+describe('IssueSummaryCard', () => {
   it('calls onResolve when button is clicked', async () => {
     const onResolve = vi.fn();
 
     render(
-      <IssueSummaryCards
+      <IssueSummaryCard
         issue={{
           id: '1',
           title: 'Test issue',

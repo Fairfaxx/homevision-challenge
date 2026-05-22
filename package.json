@@ -2,6 +2,9 @@
   "name": "homevision-challenge",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -28,6 +31,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "happy-dom": "^20.0.10",
     "jsdom": "^28.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",

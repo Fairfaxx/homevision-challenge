@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitest/config';
-
-export default defineConfig({
+const config = {
   test: {
-    environment: 'jsdom',
+    environment: 'happy-dom',
     globals: true,
   },
-});
+};
+
+export default config;
