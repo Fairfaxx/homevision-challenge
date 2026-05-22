@@ -1,6 +1,5 @@
 import { List } from 'react-window';
 import type { CSSProperties, ReactElement } from 'react';
-import { useEffect, useState } from 'react';
 import type { Issue } from '../types/review';
 import IssueSummaryCard from './IssueSummaryCard';
 
@@ -59,21 +58,8 @@ const IssueList = ({
   onResolveIssue,
   onIssueClick,
 }: IssueListProps) => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const updateIsMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-
-    updateIsMobile();
-    window.addEventListener('resize', updateIsMobile);
-
-    return () => window.removeEventListener('resize', updateIsMobile);
-  }, []);
-
-  const rowHeight = isMobile ? 300 : 190;
-  const listHeight = isMobile ? 650 : 600;
+  const rowHeight = 170;
+  const listHeight = 560;
 
   if (issues.length === 0) {
     return (
@@ -85,6 +71,19 @@ const IssueList = ({
 
   return (
     <div className="mt-4">
+      <div className="flex flex-col gap-3 sm:hidden">
+        {issues.map((issue) => (
+          <IssueSummaryCard
+            key={issue.id}
+            issue={issue}
+            resolved={resolvedIssues.includes(issue.id)}
+            onResolve={() => onResolveIssue(issue.id)}
+            onIssueClick={onIssueClick}
+          />
+        ))}
+      </div>
+
+      <div className="hidden sm:block">
       <List<RowData>
         rowComponent={Row}
         rowCount={issues.length}
@@ -97,6 +96,7 @@ const IssueList = ({
         }}
         style={{ height: listHeight, width: '100%' }}
       />
+      </div>
     </div>
   );
 };

@@ -6,6 +6,15 @@
 
 This project is a document review interface built with Next.js, TypeScript, and Tailwind CSS.
 
+## Project Overview
+
+This application helps a reviewer inspect a PDF report, track detected issues, and complete a review only when blocking items are resolved.
+
+Purpose:
+- provide a fast review workflow that links issue cards directly to document pages;
+- reduce submission mistakes by enforcing resolution of critical and major issues;
+- make review status visible through filters, counters, and clear resolved/open states.
+
 ## Stack
 
 - Next.js 16 (App Router)

@@ -20,6 +20,8 @@ const StatusFilters = ({ selectedFilter, onFilterChange }: Props) => {
         <button
           key={filter}
           onClick={() => onFilterChange(filter)}
+          aria-label={`Filter issues by ${filter}`}
+          aria-pressed={selectedFilter === filter}
           className={`w-full cursor-pointer rounded-md px-2 py-2 text-xs font-medium hover:bg-zinc-100 hover:text-black sm:w-auto sm:shrink-0 sm:px-3 sm:py-2.5 sm:text-sm ${
             selectedFilter === filter
               ? 'bg-black text-white'

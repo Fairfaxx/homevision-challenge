@@ -45,6 +45,11 @@ const IssueSummaryCard = ({
           </span>
 
           <button
+            aria-label={
+              resolved
+                ? `Issue ${issue.title} already resolved`
+                : `Mark issue ${issue.title} as resolved`
+            }
             className={`w-full rounded border px-3 py-2 text-sm sm:w-auto ${
               resolved
                 ? 'border-emerald-500 bg-emerald-500 text-white'
