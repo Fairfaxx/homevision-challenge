@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -15,6 +15,26 @@ type PDFViewerProps = {
   pdfUrl: string;
   selectedPage?: number | null;
 };
+
+type PDFPageItemProps = {
+  pageNumber: number;
+  width: number;
+  isSelected: boolean;
+};
+
+const PDFPageItem = memo(function PDFPageItem({
+  pageNumber,
+  width,
+  isSelected,
+}: PDFPageItemProps) {
+  return (
+    <Page
+      pageNumber={pageNumber}
+      width={width}
+      className={isSelected ? 'ring-4 ring-blue-500' : ''}
+    />
+  );
+});
 
 const PDFViewer = ({ pdfUrl, selectedPage }: PDFViewerProps) => {
   const [numPages, setNumPages] = useState(0);
@@ -36,40 +56,58 @@ const PDFViewer = ({ pdfUrl, selectedPage }: PDFViewerProps) => {
 
   const handleLoadSuccess = ({ numPages }: PDFDocumentProxy) => {
     setNumPages(numPages);
+    setPdfError(null);
   };
 
   useEffect(() => {
     if (!selectedPage) return;
+    if (selectedPage < 1 || selectedPage > numPages) return;
 
     pageRefs.current[selectedPage]?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
-  }, [selectedPage]);
+  }, [numPages, selectedPage]);
+
+  const pageNumbers = useMemo(
+    () => Array.from({ length: numPages }, (_, index) => index + 1),
+    [numPages],
+  );
+
+  const selectedPageLabel =
+    selectedPage && selectedPage >= 1 && selectedPage <= numPages
+      ? selectedPage
+      : 'None';
 
   return (
     <div className="h-[800px] overflow-y-auto rounded-xl border bg-zinc-100 p-4">
-      <p className="mb-4 text-black">Selected page: {selectedPage}</p>
+      <p className="mb-4 text-black">Selected page: {selectedPageLabel}</p>
       {pdfError && (
         <p className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
           {pdfError}
         </p>
       )}
       <Document
+        key={pdfUrl}
         file={pdfUrl}
         onLoadSuccess={handleLoadSuccess}
-        onLoadError={() => setPdfError('Could not load the PDF document.')}
+        onLoadError={() =>
+          setPdfError('Could not load the PDF document. Please try again.')
+        }
+        onSourceError={() =>
+          setPdfError(
+            'The document source is unavailable. Verify the URL and try again.',
+          )
+        }
         loading={<p className="text-black">Loading document...</p>}
         error={
           <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
-            Could not load the PDF document.
+            Could not load the PDF document. Please try again.
           </p>
         }
       >
         <div className="flex flex-col items-center gap-6">
-          {Array.from({ length: numPages }, (_, index) => {
-            const pageNumber = index + 1;
-
+          {pageNumbers.map((pageNumber) => {
             return (
               <div
                 key={pageNumber}
@@ -77,12 +115,10 @@ const PDFViewer = ({ pdfUrl, selectedPage }: PDFViewerProps) => {
                   pageRefs.current[pageNumber] = element;
                 }}
               >
-                <Page
+                <PDFPageItem
                   pageNumber={pageNumber}
                   width={pageWidth}
-                  className={
-                    selectedPage === pageNumber ? 'ring-4 ring-blue-500' : ''
-                  }
+                  isSelected={selectedPage === pageNumber}
                 />
               </div>
             );

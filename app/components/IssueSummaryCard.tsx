@@ -7,7 +7,7 @@ type Props = {
   onResolve: () => void;
 };
 
-const IssueSummaryCards = ({
+const IssueSummaryCard = ({
   issue,
   onIssueClick,
   resolved,
@@ -64,4 +64,4 @@ const IssueSummaryCards = ({
   );
 };
 
-export default IssueSummaryCards;
+export default IssueSummaryCard;
