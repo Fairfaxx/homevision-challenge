@@ -1,5 +1,9 @@
 HomeVision Challenge
 
+## Live Demo
+
+https://homevision-challenge-beta.vercel.app/
+
 This project is a document review interface built with Next.js, TypeScript and Tailwind CSS.
 
 The goal of the challenge was to create a simple review workflow where users can:
@@ -23,6 +27,16 @@ PDF Viewer:
 - Smooth scrolling inside the document
 - Selected page highlight
 - Responsive PDF viewer for mobile screens
+
+## Technical Decisions
+
+I used Next.js with TypeScript because the challenge is focused on a real frontend workflow and type safety helps avoid mistakes with the review data.
+
+I used react-pdf to render the uploaded PDF inside the app. Since PDF rendering depends on browser APIs, I wrapped the PDF viewer in a client component and loaded it dynamically to avoid SSR issues.
+
+The main review state lives in the Home page because different components need access to the same information: selected page, resolved issues, filters, and submit state.
+
+Counters and filtered issues are derived from the review data and resolved issues state. I did this to avoid duplicated state.
 
 
 Issue Management:

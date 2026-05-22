@@ -49,7 +49,16 @@ const PDFViewer = ({ pdfUrl, selectedPage }: PDFViewerProps) => {
   return (
     <div className="h-[800px] overflow-y-auto rounded-xl border bg-zinc-100 p-4">
       <p className="mb-4 text-black">Selected page: {selectedPage}</p>
-      <Document file={pdfUrl} onLoadSuccess={handleLoadSuccess}>
+      <Document
+        file={pdfUrl}
+        onLoadSuccess={handleLoadSuccess}
+        loading={<p className="text-black">Loading document...</p>}
+        error={
+          <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+            Could not load the PDF document.
+          </p>
+        }
+      >
         <div className="flex flex-col items-center gap-6">
           {Array.from({ length: numPages }, (_, index) => {
             const pageNumber = index + 1;
